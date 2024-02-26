@@ -9,6 +9,7 @@ import Icons from '../assets/icons';
 import { useState } from 'react';
 import { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import { icon } from '../assets/icons';
+import { primaryColors } from '../assets/colors';
 
 interface standardButtonProps extends ViewProps {
   onPress: () => void;
@@ -43,13 +44,13 @@ function newShade(hexColor: any, magnitude: number) {
 }
 
 export function StandardButton(props: standardButtonProps) {
+  const bgColor =
+    (props.style as ViewStyle).backgroundColor || primaryColors.lightGrey;
   const [pressedState, setPressedState] = useState(false);
   const pressed = useSharedValue(false);
-  const backgroundColor = useSharedValue(
-    (props.style as ViewStyle).backgroundColor,
-  );
+  const sharedBgColor = useSharedValue(bgColor);
   const pressedBackgroundColor = useSharedValue(
-    newShade((props.style as ViewStyle).backgroundColor, props.magnitude || 20),
+    newShade(bgColor, props.magnitude || 20),
   );
 
   const tab = Gesture.Tap()
@@ -65,7 +66,7 @@ export function StandardButton(props: standardButtonProps) {
   const animatedStyles = useAnimatedStyle(() => ({
     backgroundColor: pressed.value
       ? pressedBackgroundColor.value
-      : backgroundColor.value,
+      : sharedBgColor.value,
   }));
 
   return (
