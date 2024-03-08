@@ -12,8 +12,16 @@ const Stack = createNativeStackNavigator<GroupsStackParamList>();
 export function GroupsNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="groupsScreen" component={GroupsScreen} />
-      <Stack.Screen name="editGroup" component={EditGroupScreen} />
+      <Stack.Screen
+        name="groupsScreen"
+        options={{ title: 'Groups' }}
+        component={GroupsScreen}
+      />
+      <Stack.Screen
+        name="editGroup"
+        options={{ title: 'Edit Group' }}
+        component={EditGroupScreen}
+      />
     </Stack.Navigator>
   );
 }
