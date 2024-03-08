@@ -3,25 +3,30 @@ import { IconButton } from './StandardButtons';
 import { primaryColors } from '../assets/colors';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { DownUpIcon } from '../assets/icons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { GroupsStackParamList } from '../navigators/GroupsNavigator';
 
 type groupProps = {
-  name: string;
-  id: number;
+  group: { id: number; name: string; countries: string[] };
   selected: number;
   setSelected: Dispatch<SetStateAction<number>>;
-  navigation: any;
 };
 
 export function Group(props: groupProps) {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<GroupsStackParamList>>();
+
   const backgroundColor =
-    props.selected === props.id
+    props.selected === props.group.id
       ? primaryColors.lightGrey
       : primaryColors.background;
   return (
     <View style={{ ...styles.container, ...styles.rowCenter }}>
       <Pressable
         onPress={() => {
-          const newSelection = props.selected === props.id ? NaN : props.id;
+          const newSelection =
+            props.selected === props.group.id ? NaN : props.group.id;
           props.setSelected(newSelection);
         }}
         style={{
@@ -31,21 +36,16 @@ export function Group(props: groupProps) {
         }}
       >
         <DownUpIcon
-          direction={props.selected === props.id ? 'down' : 'up'}
+          direction={props.selected === props.group.id ? 'down' : 'up'}
           color={primaryColors.text}
         />
-        <Text style={styles.groupName}>{props.name}</Text>
+        <Text style={styles.groupName}>{props.group.name}</Text>
       </Pressable>
       <View style={styles.editButton}>
         <IconButton
           icon="edit"
           colorIcon={primaryColors.text}
-          onPress={() =>
-            props.navigation.navigate('Edit Group', {
-              name: props.name,
-              id: props.id,
-            })
-          }
+          onPress={() => navigation.navigate('editGroup', props.group)}
         />
       </View>
     </View>

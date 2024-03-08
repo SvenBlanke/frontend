@@ -4,24 +4,11 @@ import { primaryColors } from '../assets/colors';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useState } from 'react';
 import { Group } from '../components/Group';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { EditGroupScreen } from './EditGroupScreen';
 
-const Stack = createNativeStackNavigator();
-
-export function GroupsNavigator() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Groups" component={GroupsScreen} />
-      <Stack.Screen name="Edit Group" component={EditGroupScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function GroupsScreen({ ...props }) {
+export function GroupsScreen() {
   const groups = [
-    { id: 0, name: 'Baby' },
-    { id: 1, name: 'Baby' },
+    { id: 0, name: 'Baby', countries: ['Germany', 'Italy'] },
+    { id: 1, name: 'Baby', countries: ['France', 'Spain'] },
   ];
   const [selected, setSelected] = useState(NaN);
   const [refreshing, setRefreshing] = useState(false);
@@ -43,11 +30,9 @@ function GroupsScreen({ ...props }) {
         renderItem={group => (
           <Group
             key={group.item.id}
-            name={group.item.name}
-            id={group.item.id}
+            group={group.item}
             selected={selected}
             setSelected={setSelected}
-            navigation={props.navigation}
           />
         )}
         renderHiddenItem={() => (
